@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import java.util.Map;
 import java.util.Set;
-
+import java.util.Map.Entry;
 
 
 import java.util.List;
@@ -46,13 +46,61 @@ public abstract class Critter {
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	private static Map <Critter,crittermap> initialposition =new HashMap<>();
 	private static int time=0;
-
+	private static boolean timestepflag;
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
 	}
 	
-	protected final String look(int direction, boolean steps) {return "";}
+	
+	// STILL NEED TO TEST 
+	protected final String look(int direction, boolean steps) {
+		this.energy -= Params.look_energy_cost; 
+		int temp_x = this.x_coord; 
+		int temp_y = this.y_coord; 
+		
+		if(!timestepflag) {
+			// if you haven't done timestep, get old coord
+			this.x_coord =  initialposition.get(this).x();
+			this.y_coord =  initialposition.get(this).y();
+		}
+		
+		if(steps) {
+			this.run(direction);
+		}
+		else {
+			this.walk(direction); 
+		}
+		
+		if(timestepflag) {
+			for(Critter c : population) {
+				if(c.isAlive() && c != this) {
+					if((this.x_coord == c.x_coord) && (this.y_coord == c.y_coord)) {
+						this.x_coord = temp_x; 
+						this.y_coord = temp_y; 
+						return c.toString(); 
+					} 
+				}
+			}
+		}
+		else {
+			for(Entry<Critter, crittermap> entry : initialposition.entrySet()) {
+				Critter c = entry.getKey(); 
+				crittermap cm = entry.getValue(); 
+				if((c != this) && (this.x_coord == cm.x()) && (this.y_coord == cm.y())) {
+					this.x_coord = temp_x; 
+					this.y_coord = temp_y; 
+					return entry.getKey().toString(); 
+				}
+			}
+		}
+		
+		// Revert values back 
+		this.x_coord = temp_x; 
+		this.y_coord = temp_y; 
+		return null;
+		
+	}
 	
 	/* rest is unchanged from Project 4 */
 	
@@ -166,11 +214,14 @@ public abstract class Critter {
 	
 	
 	public static void worldTimeStep() {
-time++;//increment the time
+		time++;//increment the time
 		
+		timestepflag = false; 
+
+
 		//move critters by doing timestep
 		movecritters();
-		
+		timestepflag = true; 
 		
 		//have all critters on same tile fight
 		fightallcritters();
