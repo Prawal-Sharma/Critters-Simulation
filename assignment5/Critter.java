@@ -1,13 +1,14 @@
 package assignment5;
 
+import javafx.scene.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import java.util.List;
 import java.util.HashMap;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-
-
 import java.util.List;
 import java.util.HashSet;
 
@@ -251,7 +252,90 @@ public abstract class Critter {
 		babies.clear();
 	}
 	
-	public static void displayWorld(Object pane) {} 
+	public static void displayWorld(Object pane) {
+		GridPane grid = (GridPane) pane; 
+		Scene map = new Scene(grid, 400, 400);
+		grid.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+		int i = 0; 
+		
+		while(i != Params.world_width) {
+			ColumnConstraints colcon = new ColumnConstraints(); 
+			colcon.setPercentWidth(Params.world_width);
+			grid.getColumnConstraints().add(colcon); 
+			i++; 
+		}
+		i = 0; // reset value of iteration
+		
+		while(i != Params.world_height) {
+			RowConstraints rowcon = new RowConstraints(); 
+			rowcon.setPercentHeight(Params.world_height);
+			grid.getRowConstraints().add(rowcon); 
+			i++; 
+		}
+		
+		if(population.isEmpty()) {
+			grid.add(new Rectangle(), 0, 0);
+		}
+		else {
+			for(Critter crit : population) {
+				if(crit.isAlive()) {
+					if(crit.viewShape() == CritterShape.SQUARE) {
+						Rectangle rec = new Rectangle(); 
+						rec.widthProperty().bind(map.widthProperty().divide(Params.world_width));
+						rec.heightProperty().bind(map.heightProperty().divide(Params.world_height));								
+						rec.setStroke(crit.viewOutlineColor()); 
+						rec.setFill(crit.viewFillColor()); 	
+						rec.setStrokeWidth(3);
+						grid.add(rec, crit.x_coord, crit.y_coord);
+						
+					}
+					else if(crit.viewShape() == CritterShape.CIRCLE) {
+						Ellipse ell = new Ellipse();
+						ell.setStroke(crit.viewOutlineColor()); 
+						ell.setStrokeWidth(3);
+						ell.setFill(crit.viewFillColor()); 
+						ell.radiusXProperty().bind(map.widthProperty().divide(Params.world_width * 2));
+						ell.radiusYProperty().bind(map.heightProperty().divide(Params.world_height * 2));
+						grid.add(ell, crit.x_coord, crit.y_coord);
+					}
+					else if(crit.viewShape() == CritterShape.TRIANGLE) {
+						Triangle tri = new Triangle(map.getWidth() / Params.world_width,
+								map.getHeight() / Params.world_height);
+						tri.getTrianglePolygon().setFill(crit.viewFillColor());
+						tri.getTrianglePolygon().setStroke(crit.viewOutlineColor());
+						tri.getTrianglePolygon().setStrokeWidth(3);
+						tri.getPropertyBase().bind(map.widthProperty().divide(Params.world_width));
+						tri.getPropertyHeight().bind(map.heightProperty().divide(Params.world_height));
+						grid.add(tri.getTrianglePolygon(), crit.x_coord, crit.y_coord);
+					}
+					else if(crit.viewShape() == CritterShape.DIAMOND) {
+						Diamond diamond = new Diamond(map.getWidth() / Params.world_width,
+								map.getHeight() / Params.world_height);
+						diamond.getTrianglePolygon().setFill(crit.viewFillColor());
+						diamond.getTrianglePolygon().setStroke(crit.viewOutlineColor());
+						diamond.getTrianglePolygon().setStrokeWidth(2);
+						diamond.getPropertyWidth().bind(map.widthProperty().divide(Params.world_width));
+						diamond.getPropertyHeight().bind(map.heightProperty().divide(Params.world_height));
+						grid.add(diamond.getTrianglePolygon(), crit.x_coord, crit.y_coord);
+					}
+					else if(crit.viewShape() == CritterShape.STAR) {
+						Star star = new Star(map.getWidth() / Params.world_width, map.getHeight() / Params.world_height);
+						 star.getStarPolygon().setFill(crit.viewFillColor());
+						 star.getStarPolygon().setStroke(crit.viewOutlineColor());
+						star.getStarPolygon().setStrokeWidth(3);
+						star.getXFactorProperty().bind(map.widthProperty().divide(Params.world_width));
+                        star.getYFactorProperty().bind(map.heightProperty().divide(Params.world_height));
+					    grid.add(star.getStarPolygon(), crit.x_coord, crit.y_coord);
+						
+					}
+				}
+				
+			}
+		}
+		grid.setGridLinesVisible(true);
+		Main.setWorldMap(map);
+		
+	} 
 	/* Alternate displayWorld, where you use Main.<pane> to reach into your
 	   display component.
 	   // public static void displayWorld() {}

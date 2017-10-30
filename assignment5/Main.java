@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -41,7 +42,7 @@ public class Main  extends Application {
 	 private static GridPane controlPane;
      private static Stage controlStage;
 	protected static boolean runStatsCritterSelectedbool;
-	
+	private static Stage critterMap = new Stage(); 
 	
 	
 	public static void main(String[] args) {
@@ -53,7 +54,7 @@ public class Main  extends Application {
 		// TODO Auto-generated method stub
 		
 		createcontroller();
-
+		
 }
 
 	private void createcontroller() {
@@ -67,8 +68,8 @@ public class Main  extends Application {
             @Override
             public void handle(ActionEvent event) 
             {
-                
-            	Critter.displayWorld(   );
+            GridPane grid = new GridPane();     
+            	Critter.displayWorld(grid);
             textDisplayWorld.setText("The world is displayed.");
             }
         });
@@ -201,6 +202,24 @@ public class Main  extends Application {
         
         
         
+	}
+	
+	public static void setWorldMap(Scene scene) {
+		if(critterMap.getScene() == null) {
+			critterMap.setScene(scene);
+			Rectangle2D primBound = Screen.getPrimary().getVisualBounds(); 
+			critterMap.setX(primBound.getMinX() + 700);
+			critterMap.setY(primBound.getMinY() + primBound.getHeight() / 8 + 50);
+			critterMap.show();
+		}
+		else {
+			double changedWidth = critterMap.getWidth(); 
+			double changedHeight = critterMap.getHeight(); 
+			critterMap.setScene(scene);
+			critterMap.setWidth(changedWidth);
+			critterMap.setHeight(changedHeight);
+			critterMap.show();
+		}
 	}
 
 	private String[] getClasses() {
