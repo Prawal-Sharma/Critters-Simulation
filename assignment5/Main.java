@@ -40,6 +40,7 @@ public class Main  extends Application {
 
 	 private static GridPane controlPane;
      private static Stage controlStage;
+	protected static boolean runStatsCritterSelectedbool;
 	
 	
 	
@@ -52,17 +53,20 @@ public class Main  extends Application {
 		// TODO Auto-generated method stub
 		
 		createcontroller();
-		
+
 }
 
 	private void createcontroller() {
 		// TODO Auto-generated method stub
+		
 		// display world button
         Text textDisplayWorld = new Text("The world is not displayed.");
         Button displayworldButton = new Button("Display World");
-        displayworldButton.setOnAction(new EventHandler<ActionEvent>() {
+        displayworldButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event) 
+            {
                 
             	Critter.displayWorld(   );
             textDisplayWorld.setText("The world is displayed.");
@@ -74,16 +78,18 @@ public class Main  extends Application {
         controlPane.add(textDisplayWorld,1,1);
         
         
-        
+        //make critter button
         Button makecritbutton = new Button("Make Critter");
         ComboBox<String> makeCritterDropdown = new ComboBox<>();
         String[] classes = this.getClasses();
         makeCritterDropdown.getItems().addAll(classes); // set up w/ Critter
                                                         // implementing classes
         TextField makeInputBox = new TextField("1"); // default to 1 critter
-        makecritbutton.setOnAction(new EventHandler<ActionEvent>() {
+        makecritbutton.setOnAction(new EventHandler<ActionEvent>() 
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event) 
+            {
                 try 
                 {
                     String choice = makeCritterDropdown.getValue();
@@ -104,6 +110,96 @@ public class Main  extends Application {
                 catch (NumberFormatException e) {}
             }
         });
+        controlPane.add(makecritbutton, 0, 2);
+        controlPane.add(makeInputBox, 1, 2);
+        controlPane.add(makeCritterDropdown, 2, 2);
+
+        
+        
+        //runstats button
+        
+        Button runStatsButton = new Button("Run Stats");
+        ComboBox<String> runStatsdropdown = new ComboBox<>();
+        Text runStatsText = new Text("Select Critter.");
+        runStatsText.setFont(Font.font(null,FontWeight.NORMAL,18));
+        runStatsText.setFill(Color.BLACK);
+        runStatsdropdown.getItems().addAll(classes); // set up w/ Critter
+                                                     // implementing classes
+        runStatsButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent e) 
+            {
+                Class<?> c = null;
+                String selection = runStatsdropdown.getValue();
+                if (selection != null) 
+                { 
+                    runStatsCritterSelectedbool = true;
+                		runStatsText.setText("Ran stats on " + selection + ".");
+                     displayRunStatsScene();
+                } 
+                else 
+                {
+                		runStatsText.setText("Please select a critter.");
+                		runStatsCritterSelectedbool = false;
+                }
+            }
+
+			
+        });
+        controlPane.add(runStatsButton, 0, 3);
+        controlPane.add(runStatsdropdown, 1, 3);
+        controlPane.add(runStatsText, 2, 3);
+        
+        
+        
+     // make  time step button 
+        Button stepButton = new Button("Perform Time Step");
+        TextField stepInputBox = new TextField("1"); // default 1 step
+        Text textStep = new Text("");
+   //     textStep.setFill(Color.WHITE);
+   //     textStep.setStyle();
+        
+
+        stepButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+
+                String input = stepInputBox.getText();
+                textDisplayWorld.setText("The world was displayed.");
+
+                if (input.equals("") || input.equals("1")) 
+                {
+                    Critter.worldTimeStep();
+                    textStep.setText("");
+                } 
+                else 
+                {
+                    textStep.setText("");
+                    try 
+                    {
+                        int n = Integer.parseInt(input);
+                        for (int i = 0; i < n; i++) 
+                        {
+                            Critter.worldTimeStep();
+                        }
+                    } 
+                    catch (Exception e) 
+                    {
+                        textStep.setText("Enter an integer.");
+                    }
+                }
+            }
+        });
+        controlPane.add(stepButton, 0, 4);
+        controlPane.add(stepInputBox, 1, 4);
+        controlPane.add(textStep, 2, 4);
+
+     
+        
+        
         
 	}
 
@@ -118,5 +214,8 @@ public class Main  extends Application {
 	}
 	
 	
-	
+	private void  displayRunStatsScene() {
+				// TODO Auto-generated method stub
+				
+	}
 }
