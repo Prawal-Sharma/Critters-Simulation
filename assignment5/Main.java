@@ -169,7 +169,13 @@ public class Main  extends Application {
                 } 
                 catch (InvalidCritterException e) {} 
                 catch (NumberFormatException e) {}
+                
+                //Update display when button is pressed  
+                GridPane grid = new GridPane();     
+            	Critter.displayWorld(grid);
+            textDisplayWorld.setText("The world is displayed.");
             }
+           
         });
         controlPane.add(makecritbutton, 0, 2);
         controlPane.add(makeInputBox, 1, 2);
@@ -252,6 +258,10 @@ public class Main  extends Application {
                         textStep.setText("Enter an integer.");
                     }
                 }
+                // Update Display when button is pressed 
+                GridPane grid = new GridPane();     
+            	Critter.displayWorld(grid);
+            textDisplayWorld.setText("The world is displayed.");
             }
         });
         controlPane.add(stepButton, 0, 4);
