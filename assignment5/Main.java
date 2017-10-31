@@ -34,6 +34,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+
+import java.io.File;
+import java.util.ArrayList;
+
 import javafx.animation.*;
 
 
@@ -83,9 +87,9 @@ public class Main  extends Application {
         Button makecritbutton = new Button("Make Critter");
         ComboBox<String> makeCritterDropdown = new ComboBox<>();
         String[] classes = this.getClasses();
-        makeCritterDropdown.getItems().addAll(classes); // set up w/ Critter
-                                                        // implementing classes
-        TextField makeInputBox = new TextField("1"); // default to 1 critter
+        makeCritterDropdown.getItems().addAll(classes); 
+                                                       
+        TextField makeInputBox = new TextField("1"); 
         makecritbutton.setOnAction(new EventHandler<ActionEvent>() 
         {
             @Override
@@ -198,8 +202,76 @@ public class Main  extends Application {
         controlPane.add(stepInputBox, 1, 4);
         controlPane.add(textStep, 2, 4);
 
-     
+     // seed button
+        Text textSeed =new Text("");
+        TextField seedInputBox = new TextField();
+        seedInputBox.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+                try 
+                {
+                    int i = Integer.parseInt(seedInputBox.getText());
+                    Critter.setSeed(i);
+                    textSeed.setText("Seed set to "+i);
+                } 
+                catch (Exception e) 
+                {
+                    textSeed.setText("Enter an integer.");
+                }
+            }
+        });
+        Button seedButton = new Button("Set Seed");
+        seedButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent arg0) 
+            {
+                try 
+                {
+                    int i = Integer.parseInt(seedInputBox.getText());
+                    Critter.setSeed(i);
+                    textSeed.setText("Seed set to " + i);
+                } 
+                catch (Exception e) 
+                {
+                    textSeed.setText("Enter an integer.");
+                }
+            }
+        });
+        textSeed.setFill(Color.WHITE);
+        //textSeed.setStyle("-fx-font-size: 20");
+        controlPane.add(seedButton,0,7);
+        controlPane.add(seedInputBox,1,7);
+        controlPane.add(textSeed,2,7);
+
         
+        
+        
+        //  quit button
+        Button quitButton = new Button("Quit");
+        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+        controlPane.add(quitButton, 0, 10);
+
+        
+        
+        
+        //  reset button
+        Button resetButton = new Button("Reset");
+        resetButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                Critter.clearWorld();
+            }
+        });
+        controlPane.add(resetButton, 1, 10);
+
         
         
 	}
@@ -225,11 +297,37 @@ public class Main  extends Application {
 	private String[] getClasses() {
 		// TODO Auto-generated method stub
 		
+		ArrayList<String> critters = new ArrayList<>();
+		File directory = new File(Critter.class.getPackage().toString().split(" ")[1]);
+		String[] filelist= new String[1];
+		if (directory.exists()) {filelist=directory.list();}
+		for (int i=0;i<filelist.length;i++)
+		{
+			filelist[i] = filelist[i].split("^*{0,}\\.")[0];
+		}
+		for (String crit:filelist)
+		{
+			String className = Critter.class.getPackage().toString().split(" ")[1] +"." +crit;
+            Class<?> c = null;
+            try 
+            {
+                c = Class.forName(className);
+            } 
+            catch (ClassNotFoundException ce) {}
+            if (c !=null && Critter.class.isAssignableFrom(c)) 
+            {
+                try 
+                {
+                    @SuppressWarnings("unused")
+                    Critter o = (Critter) c.newInstance();
+                    critters.add(crit);
+                } 
+                catch (InstantiationException e) {} 
+                catch (IllegalAccessException e) {}
+            }
+		}
 		
-		
-		
-		
-		return null;
+		return critters.toArray(new String[critters.size()]);
 	}
 	
 	
