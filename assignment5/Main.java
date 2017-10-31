@@ -44,7 +44,7 @@ import javafx.animation.*;
 public class Main  extends Application {
 
 	 private static GridPane controlPane;
-     private static Stage controlStage;
+    private static Stage controlStage;
 	protected static boolean runStatsCritterSelectedbool;
 	private static Stage critterMap = new Stage(); 
 	
@@ -57,10 +57,66 @@ public class Main  extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		
-		createcontroller();
+		CreatepaneStart();
 		
-}
+	}
 
+	 public void CreatepaneStart() {
+	        // Make pane
+	        controlPane = new GridPane();
+	        controlPane.setHgap(25);
+	        controlPane.setVgap(30);
+	        controlPane.setPadding(new Insets(0, 0, 0, 20));
+	        Stop[] stops = new Stop[] { new Stop(0, Color.rgb(0, 222, 255)), new Stop(1, Color.WHITE)};
+	       // LinearGradient gradient = new LinearGradient(0,0, 0,1.5, true, CycleMethod.NO_CYCLE, stops);
+	        controlPane.setBackground(new Background(new BackgroundFill(null, null, new Insets(-10))));
+	        
+	        // Make border pane
+	        BorderPane bPane = new BorderPane();
+	     
+	        Text title = new Text("Critter Controller");
+	        title.setFont(Font.font(null, FontWeight.BOLD, 65));
+	        title.setFill(Color.WHITE);
+	        VBox titleBox = new VBox();
+	        titleBox.setPadding(new Insets(20,0,8,0));
+	        titleBox.getChildren().add(title);
+	        titleBox.setAlignment(Pos.CENTER);
+	        bPane.setBackground(new Background(new BackgroundFill(Color.rgb(0, 204, 255), null, new Insets(-10))));
+	        bPane.setTop(titleBox);
+	        bPane.setCenter(controlPane);
+	        
+	        // Make the stage
+	        controlStage = new Stage();
+	        controlStage.setScene(new Scene(bPane,700,700));
+	        controlStage.setTitle("Controller Window");
+	        controlStage.setResizable(false);
+	        //controllerStage.initStyle(StageStyle.UTILITY);
+	        
+	        //  create the controller
+	        createcontroller();
+	        
+	        // Set stage bounds
+	        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+	        controlStage.setX(primaryScreenBounds.getMinX() + 50);
+	        controlStage.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() / 9);
+
+	        controlStage.show();
+
+	        // Window title
+	        critterMap.setTitle("Critter World");
+	        //critterMap.initStyle(StageStyle.UTILITY);
+	       // runStatswindow.setTitle("Critter Stats Monitor");
+	        //runStatsWindow.initStyle(StageStyle.UTILITY);
+
+	    }
+
+	
+	
+	
+	
+	
+	
+	
 	private void createcontroller() {
 		// TODO Auto-generated method stub
 		
