@@ -393,7 +393,16 @@ public class Main  extends Application {
             }
 		}
 		
-		return critters.toArray(new String[critters.size()]);
+		
+		ArrayList<String> returnlist= new ArrayList<>();
+		for (String s : critters) {
+			if (!returnlist.contains(s)) {
+				returnlist.add(s);
+			}
+			
+			
+		}
+		return returnlist.toArray(new String[returnlist.size()]);
 	}
 	
 	
