@@ -4,6 +4,8 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import quiz6_javafx.Critter;
+
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -391,8 +393,8 @@ public abstract class Critter {
 		return result;
 	}
 	
-	public static void runStats(List<Critter> critters) {
-		System.out.print("" + critters.size() + " critters as follows -- ");
+	public static String runStats(List<Critter> critters) {
+		String critterstats = "" + critters.size() + " critters as follows -- ";
 		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
 		for (Critter crit : critters) {
 			String crit_string = crit.toString();
@@ -404,11 +406,15 @@ public abstract class Critter {
 			}
 		}
 		String prefix = "";
-		for (String s : critter_count.keySet()) {
-			System.out.print(prefix + s + ":" + critter_count.get(s));
+		String stat="";
+		for (String s : critter_count.keySet()) 
+		{
+			stat =stat.concat(prefix + s + ":" + critter_count.get(s));
 			prefix = ", ";
 		}
-		System.out.println();
+		
+		
+		return critterstats+   stat;
 	}
 	
 	/* the TestCritter class allows some critters to "cheat". If you want to 
