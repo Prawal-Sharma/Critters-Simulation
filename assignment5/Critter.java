@@ -4,7 +4,7 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
-import quiz6_javafx.Critter;
+import assignment5.Critter;
 
 import java.util.List;
 import java.util.HashMap;
