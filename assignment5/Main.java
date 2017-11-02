@@ -36,19 +36,22 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.animation.*;
 
 
 public class Main  extends Application {
-
+	private static Stage runStatsWindow=new Stage();
 	 private static GridPane controlPane;
     private static Stage controlStage;
 	protected static boolean runStatsCritterSelectedbool;
+	private static ArrayList<TextFlow> textList = new ArrayList <TextFlow>();
 	private static Stage critterMap = new Stage(); 
-	
-	
+	private static ComboBox<String> runstatsmenu = new ComboBox<>();
+	private static Text runstatsdisplaytext = new Text();
 	public static void main(String[] args) {
 		 launch(args);
 	}
@@ -186,11 +189,11 @@ public class Main  extends Application {
         //runstats button
         
         Button runStatsButton = new Button("Run Stats");
-        ComboBox<String> runStatsdropdown = new ComboBox<>();
-        Text runStatsText = new Text("Select Critter.");
-        runStatsText.setFont(Font.font(null,FontWeight.NORMAL,18));
-        runStatsText.setFill(Color.BLACK);
-        runStatsdropdown.getItems().addAll(classes); // set up w/ Critter
+        runstatsmenu = new ComboBox<>();
+        runstatsdisplaytext = new Text("Select Critter.");
+        runstatsdisplaytext.setFont(Font.font(null,FontWeight.NORMAL,18));
+        runstatsdisplaytext.setFill(Color.BLACK);
+        runstatsmenu.getItems().addAll(classes); // set up w/ Critter
                                                      // implementing classes
         runStatsButton.setOnAction(new EventHandler<ActionEvent>() 
         {
@@ -198,25 +201,25 @@ public class Main  extends Application {
             public void handle(ActionEvent e) 
             {
                 Class<?> c = null;
-                String selection = runStatsdropdown.getValue();
+                String selection = runstatsmenu.getValue();
                 if (selection != null) 
                 { 
-                    runStatsCritterSelectedbool = true;
-                		runStatsText.setText("Ran stats on " + selection + ".");
-                     displayRunStatsScene();
+                      runStatsCritterSelectedbool=true;
+                      runstatsdisplaytext.setText("Ran stats on " + selection + ".");
+                      displayRunStatsScene();
                 } 
                 else 
                 {
-                		runStatsText.setText("Please select a critter.");
-                		runStatsCritterSelectedbool = false;
+                		runstatsdisplaytext.setText("Please select a critter.");
+                		runStatsCritterSelectedbool=false;
                 }
             }
 
 			
         });
-        controlPane.add(runStatsButton, 0, 3);
-        controlPane.add(runStatsdropdown, 1, 3);
-        controlPane.add(runStatsText, 2, 3);
+        controlPane.add(runStatsButton,0,3);
+        controlPane.add(runstatsmenu,1,3);
+        controlPane.add(runstatsdisplaytext,2,3);
         
         
         
@@ -260,8 +263,8 @@ public class Main  extends Application {
                 }
                 // Update Display when button is pressed 
                 GridPane grid = new GridPane();     
-            	Critter.displayWorld(grid);
-            textDisplayWorld.setText("The world is displayed.");
+                Critter.displayWorld(grid);
+                textDisplayWorld.setText("The world is displayed.");
             }
         });
         controlPane.add(stepButton, 0, 4);
@@ -406,8 +409,73 @@ public class Main  extends Application {
 	}
 	
 	
-	private void  displayRunStatsScene() {
+	private void  displayRunStatsScene()  
+	{
 				// TODO Auto-generated method stub
+	
+		
+		Class<?> c =null;
+		
+		
+		String critterstats="";
+        
+        String critchoice = runstatsmenu.getValue();
+        if (critchoice!= null) 
+        { 
+                                 
+            runStatsCritterSelectedbool =true;
+            runstatsdisplaytext.setText("Run stats for "+critchoice+ ".");
+            String classname =Critter.class.getPackage().toString().split(" ")[1]+ "."+critchoice;
+            try 
+            {
+                List<Critter>list = Critter.getInstances(critchoice);
+                c = Class.forName(classname);
+                critterstats = (String)c.getMethod("runStats",List.class).invoke(null,list);
+            } 
+            catch (ClassNotFoundException e3) {} catch (InvalidCritterException e) {
+				// TODO Auto-generated catch block
 				
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				
+			}
+        } 
+        else 
+        {
+        		runstatsdisplaytext.setText("Please select a critter.");
+            runStatsCritterSelectedbool =false;
+        }
+        GridPane textGrid = new GridPane();
+        ScrollPane root = new ScrollPane(textGrid);
+        root.setVvalue(1.0);
+        Scene run_stat_scene = new Scene(root,500, 250);
+        TextFlow textHolder= new TextFlow();
+        Text critterstattext =new Text(critterstats);                                      
+        //textHolder.widthProperty().isEqualTo(run_stat_scene.widthProperty());
+        critterstattext.setFill(Color.BLACK);
+        textHolder.getChildren().add(critterstattext);
+        textList.add(textHolder);
+        for (int k=0; k < textList.size(); k++) 
+        {
+            textGrid.add(textList.get(k),0, k);
+        }
+        runStatsWindow.setScene(run_stat_scene);
+        Rectangle2D primaryScreenBounds= Screen.getPrimary().getVisualBounds();
+        runStatsWindow.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 525);
+        runStatsWindow.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() / 3);
+        runStatsWindow.show();
+		
 	}
 }
