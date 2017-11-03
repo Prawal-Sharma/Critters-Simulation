@@ -71,8 +71,8 @@ public class Main  extends Application {
 	        controlPane.setVgap(30);
 	        controlPane.setPadding(new Insets(0, 0, 0, 20));
 	        Stop[] stops = new Stop[] { new Stop(0, Color.rgb(0, 222, 255)), new Stop(1, Color.WHITE)};
-	       // LinearGradient gradient = new LinearGradient(0,0, 0,1.5, true, CycleMethod.NO_CYCLE, stops);
-	        controlPane.setBackground(new Background(new BackgroundFill(null, null, new Insets(-10))));
+	        LinearGradient gradient = new LinearGradient(0,0, 0,1.5, true, CycleMethod.NO_CYCLE, stops);
+	        controlPane.setBackground(new Background(new BackgroundFill(gradient, null, new Insets(-10))));
 	        
 	        // Make border pane
 	        BorderPane bPane = new BorderPane();
@@ -309,7 +309,7 @@ public class Main  extends Application {
                 }
             }
         });
-        textSeed.setFill(Color.WHITE);
+        textSeed.setFill(Color.BLACK);
         //textSeed.setStyle("-fx-font-size: 20");
         controlPane.add(seedButton,0,7);
         controlPane.add(seedInputBox,1,7);
@@ -335,7 +335,8 @@ public class Main  extends Application {
         Button resetButton = new Button("Reset");
         resetButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent arg0) {
+            public void handle(ActionEvent arg0) 
+            {
                 Critter.clearWorld();
             }
         });
@@ -346,7 +347,7 @@ public class Main  extends Application {
 	}
 	
 	public static void setWorldMap(Scene scene) {
-		if(critterMap.getScene() == null) {
+		if(critterMap.getScene()==null) {
 			critterMap.setScene(scene);
 			Rectangle2D primBound = Screen.getPrimary().getVisualBounds(); 
 			critterMap.setX(primBound.getMinX() + 700);
