@@ -79,12 +79,12 @@ public class Main  extends Application {
 	     
 	        Text title = new Text("Critter Controller");
 	        title.setFont(Font.font(null, FontWeight.BOLD, 65));
-	        title.setFill(Color.WHITE);
+	        title.setFill(Color.BLACK);
 	        VBox titleBox = new VBox();
 	        titleBox.setPadding(new Insets(20,0,8,0));
 	        titleBox.getChildren().add(title);
 	        titleBox.setAlignment(Pos.CENTER);
-	        bPane.setBackground(new Background(new BackgroundFill(Color.rgb(0, 204, 255), null, new Insets(-10))));
+	        bPane.setBackground(new Background(new BackgroundFill(Color.rgb(204, 255, 204), null, new Insets(-10))));
 	        bPane.setTop(titleBox);
 	        bPane.setCenter(controlPane);
 	        
@@ -463,7 +463,7 @@ public class Main  extends Application {
         Scene run_stat_scene = new Scene(root,500, 250);
         TextFlow textHolder= new TextFlow();
         Text critterstattext =new Text(critterstats);                                      
-        //textHolder.widthProperty().isEqualTo(run_stat_scene.widthProperty());
+        textHolder.widthProperty().isEqualTo(run_stat_scene.widthProperty());
         critterstattext.setFill(Color.BLACK);
         textHolder.getChildren().add(critterstattext);
         textList.add(textHolder);
