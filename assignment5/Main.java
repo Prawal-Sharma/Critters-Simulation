@@ -163,7 +163,7 @@ public class Main  extends Application {
                         if (input!=null) 
                         {
                             int n = Integer.parseInt(input);
-                            for (int i = 0; i < n; i++) 
+                            for (int i = 0; i <= n; i++) 
                             {
                                 Critter.makeCritter(choice);
                             }

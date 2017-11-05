@@ -5,21 +5,23 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.shape.Polygon;
 
+
+
 public class Star {
 	 private Polygon polygon;
 	    
-	    // Scaling factors
+
 	    private double xFactor;
 	    private double yFactor;
 
-	    // Coordinates of each point of the star
+
 	    private Double[] xCoords;
 	    private Double[] yCoords;
 	    
-	    // Points array
+
 	    private Double[] points;
 	   
-	    // Boolean properties to set the coords when rescaled
+	    
 	    private DoubleProperty scaleXProperty;
 	    private DoubleProperty scaleYProperty;
 
@@ -39,11 +41,11 @@ public class Star {
 	    
 	    public Star(double xFactor, double yFactor) {
 
-	        // Set factors
+	    
 	        this.xFactor = xFactor;
 	        this.yFactor = yFactor;
 
-	        // Set the xCoords & yCoords times the factor, set the properties
+	  
 	        xCoords = new Double[10];
 	        yCoords = new Double[10];
 	        int temp = 0;
@@ -54,7 +56,7 @@ public class Star {
 	            temp++;
 	        }
 	        
-	        // Combine x and y coords
+	    
 	        points = new Double[20];
 	        temp = 0;
 	        for (int i = 0; i < 20; i++) {
@@ -64,11 +66,11 @@ public class Star {
 	            temp++;
 	        }
 	        
-	        // Make the polygon & set the initial size
+	
 	        polygon = new Polygon();
 	        polygon.getPoints().addAll(points);
 	        
-	        // Make the properties that change the coordinate scaling
+	     
 	        scaleXProperty = new SimpleDoubleProperty(this.xFactor);
 	        scaleXProperty.addListener(new ChangeListener<Number>(){
 	            @Override
@@ -83,7 +85,7 @@ public class Star {
 	            }            
 	        });
 	        
-	        // Make the properties that change the coordinate scaling
+	       
 	        scaleYProperty = new SimpleDoubleProperty(this.yFactor);
 	        scaleYProperty.addListener(new ChangeListener<Number>(){
 	            @Override
@@ -100,13 +102,10 @@ public class Star {
 
 	    }
 
-	    /*
-	     * Set the xCoords & yCoords times the factor, set the properties Create a
-	     * new double array of all the coordinates, then set the polygon accordingly
-	     */
+	   
 	    private void redrawStar() {
 
-	        // Combine x and y coords
+	       
 	        Double[] newPoints = new Double[20];
 	        int temp = 0;
 	        for (int i = 0; i < 20; i++) {
@@ -121,9 +120,7 @@ public class Star {
 
 	    }
 
-	    /*
-	     * Return the triangle as a polygon object
-	     */
+	    
 	    public Polygon getStarPolygon() {
 	        return this.polygon;
 	    }

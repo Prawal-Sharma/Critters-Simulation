@@ -19,11 +19,11 @@ public class Triangle {
 
 	        this.polygon = new Polygon();
 
-	        // Set the properties
+	    
 	        this.height = new SimpleDoubleProperty(base);
 	        this.base = new SimpleDoubleProperty(height);
 
-	        this.height.addListener(new ChangeListener<Number>() {  // listens for changes to the world height
+	        this.height.addListener(new ChangeListener<Number>() { 
 	            @Override
 	            public void changed(ObservableValue<? extends Number> ov, Number oldHeight, Number newHeight) {
 	                h = newHeight.doubleValue();
@@ -31,7 +31,7 @@ public class Triangle {
 	            }
 	        });
 
-	        this.base.addListener(new ChangeListener<Number>() {   // listens for changes to the world width
+	        this.base.addListener(new ChangeListener<Number>() {   
 	            @Override
 	            public void changed(ObservableValue<? extends Number> ov, Number oldBase, Number newBase) {
 	                b = newBase.doubleValue();
@@ -39,11 +39,11 @@ public class Triangle {
 	            }
 	        });
 
-	        // Set values
+	        
 	        this.b = base;
 	        this.h = height;
 	 
-	        // Set defaults
+	      
 	        polygon.getPoints().addAll(new Double[] { b / 2, 0.0, b, h, 0.0, h });
 
 	    }
@@ -53,9 +53,8 @@ public class Triangle {
 	        polygon.getPoints().addAll(new Double[] { b / 2, 0.0, b, h, 0.0, h });
 	    }
 
-	    /*
-	     * Return the triangle as a polygon object
-	     */
+
+	   
 	    public Polygon getTrianglePolygon() {
 	        return this.polygon;
 	    }
