@@ -30,6 +30,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -74,19 +76,35 @@ public class Main  extends Application {
 	        LinearGradient gradient = new LinearGradient(0,0, 0,1.5, true, CycleMethod.NO_CYCLE, stops);
 	        controlPane.setBackground(new Background(new BackgroundFill(gradient, null, new Insets(-10))));
 	        
+	        
 	        // Make border pane
 	        BorderPane bPane = new BorderPane();
+	        
 	     
 	        Text title = new Text("Critter Controller");
-	        title.setFont(Font.font(null, FontWeight.BOLD, 65));
-	        title.setFill(Color.BLACK);
+	        title.setFont(Font.font("Helvetica", 65));
+	        title.setFill(Color.BLUE);
 	        VBox titleBox = new VBox();
+
 	        titleBox.setPadding(new Insets(20,0,8,0));
 	        titleBox.getChildren().add(title);
 	        titleBox.setAlignment(Pos.CENTER);
 	        bPane.setBackground(new Background(new BackgroundFill(Color.rgb(204, 255, 204), null, new Insets(-10))));
 	        bPane.setTop(titleBox);
 	        bPane.setCenter(controlPane);
+	        
+	        // 
+	        // Prawal Image
+	        ImageView image = new ImageView(new Image(getClass().getResourceAsStream("prawal.png"),100, 100, true, true ));
+	        image.setX(300);
+	        image.setY(550);
+	        bPane.getChildren().add(image); 
+	        
+	        // Eric Image 
+	        ImageView image2 = new ImageView(new Image(getClass().getResourceAsStream("eric.png"),100, 100, false, true ));
+	        image2.setX(450);
+	        image2.setY(550);
+	        bPane.getChildren().add(image2); 
 	        
 	        // Make the stage
 	        controlStage = new Stage();
@@ -123,6 +141,8 @@ public class Main  extends Application {
 		
 		// display world button
         Text textDisplayWorld = new Text("The world is not displayed.");
+        textDisplayWorld.setFont(Font.font("Helvetica", 20));
+        textDisplayWorld.setFill(Color.BLUE);
         Button displayworldButton = new Button("Display World");
         displayworldButton.setOnAction(new EventHandler<ActionEvent>() 
         {
@@ -132,6 +152,8 @@ public class Main  extends Application {
             GridPane grid = new GridPane();     
             	Critter.displayWorld(grid);
             textDisplayWorld.setText("The world is displayed.");
+            textDisplayWorld.setFont(Font.font("Helvetica", 20));
+            textDisplayWorld.setFill(Color.BLUE);
             }
         });
         textDisplayWorld.setFill(Color.BLACK);
@@ -381,6 +403,8 @@ public class Main  extends Application {
                     int i = Integer.parseInt(seedInputBox.getText());
                     Critter.setSeed(i);
                     textSeed.setText("Seed set to " + i);
+                    textSeed.setFont(Font.font("Helvetica", 20));
+                    textSeed.setFill(Color.BLUE);
                 } 
                 catch (Exception e) 
                 {
@@ -417,6 +441,10 @@ public class Main  extends Application {
             public void handle(ActionEvent arg0) 
             {
                 Critter.clearWorld();
+                // Update display when reset is pressed 
+                GridPane grid = new GridPane();     
+                Critter.displayWorld(grid);
+             	
             }
         });
         controlPane.add(resetButton, 1, 10);
@@ -505,6 +533,8 @@ public class Main  extends Application {
                                  
             runStatsCritterSelectedbool =true;
             runstatsdisplaytext.setText("Run stats for "+critchoice+ ".");
+            runstatsdisplaytext.setFont(Font.font("Helvetica", 20));
+            runstatsdisplaytext.setFill(Color.BLUE);
             String classname =Critter.class.getPackage().toString().split(" ")[1]+ "."+critchoice;
             try 
             {
