@@ -70,7 +70,7 @@ public class Main  extends Application {
 	        controlPane.setHgap(25);
 	        controlPane.setVgap(30);
 	        controlPane.setPadding(new Insets(0, 0, 0, 20));
-	        Stop[] stops = new Stop[] { new Stop(0, Color.rgb(0, 222, 255)), new Stop(1, Color.WHITE)};
+	        Stop[] stops = new Stop[] { new Stop(0, Color.rgb(204, 255, 204)), new Stop(1, Color.WHITE)};
 	        LinearGradient gradient = new LinearGradient(0,0, 0,1.5, true, CycleMethod.NO_CYCLE, stops);
 	        controlPane.setBackground(new Background(new BackgroundFill(gradient, null, new Insets(-10))));
 	        
@@ -90,7 +90,7 @@ public class Main  extends Application {
 	        
 	        // Make the stage
 	        controlStage = new Stage();
-	        controlStage.setScene(new Scene(bPane,700,700));
+	        controlStage.setScene(new Scene(bPane,650,700));
 	        controlStage.setTitle("Controller Window");
 	        controlStage.setResizable(false);
 	        //controllerStage.initStyle(StageStyle.UTILITY);
@@ -107,9 +107,7 @@ public class Main  extends Application {
 
 	        // Window title
 	        critterMap.setTitle("Critter World");
-	        //critterMap.initStyle(StageStyle.UTILITY);
-	       // runStatswindow.setTitle("Critter Stats Monitor");
-	        //runStatsWindow.initStyle(StageStyle.UTILITY);
+	        
 
 	    }
 
@@ -163,7 +161,7 @@ public class Main  extends Application {
                         if (input!=null) 
                         {
                             int n = Integer.parseInt(input);
-                            for (int i = 0; i <= n; i++) 
+                            for (int i = 0; i < n; i++) 
                             {
                                 Critter.makeCritter(choice);
                             }
@@ -176,6 +174,7 @@ public class Main  extends Application {
                 //Update display when button is pressed  
                 GridPane grid = new GridPane();     
             	Critter.displayWorld(grid);
+            	  displayRunStatsScene();
             textDisplayWorld.setText("The world is displayed.");
             }
            
@@ -227,8 +226,7 @@ public class Main  extends Application {
         Button stepButton = new Button("Perform Time Step");
         TextField stepInputBox = new TextField("1"); // default 1 step
         Text textStep = new Text("");
-   //     textStep.setFill(Color.WHITE);
-   //     textStep.setStyle();
+
         
 
         stepButton.setOnAction(new EventHandler<ActionEvent>() 
@@ -264,6 +262,8 @@ public class Main  extends Application {
                 // Update Display when button is pressed 
                 GridPane grid = new GridPane();     
                 Critter.displayWorld(grid);
+                displayRunStatsScene();
+                
                 textDisplayWorld.setText("The world is displayed.");
             }
         });
@@ -475,7 +475,8 @@ public class Main  extends Application {
         runStatsWindow.setScene(run_stat_scene);
         Rectangle2D primaryScreenBounds= Screen.getPrimary().getVisualBounds();
         runStatsWindow.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 525);
-        runStatsWindow.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() / 3);
+        runStatsWindow.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() +40);
+        runStatsWindow.setTitle("Critter Stats");
         runStatsWindow.show();
 		
 	}
