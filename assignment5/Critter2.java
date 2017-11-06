@@ -19,7 +19,7 @@ package assignment5;
 
 //Critter 2 is called the coin flip critter. in normal timestep, theres a 50% chance that he walk in a random direction
 // or a 50% chance he does nothing. When he has encounters, he fights half the time and the other half of the time, he might
- *  fight if he happens to sees a friend of the same type nearby. Otherwise, he will just walk away in the direction he looked
+ *  fight if he happens to sees non critter 2 nearby. 
  *   This unpredictability will make this critter behave sporatically and perhaps help it stay 
 //alive for a longer time.
 
@@ -44,11 +44,10 @@ public class Critter2 extends Critter {
 		else {
 			int rand=getRandomInt(8);
 			String a =look(rand,false);			//50% chance to look in random direction
-			if (a.equals(this.toString()))
-			{
-				return true;						//if it sees its friend who is of same type, then it will fight to protect
+			if (!opponent.equals(a)) {		//fight if its not a friendly
+				return true;
 			}
-			walk(rand);				//else just walk into the looked place
+					
 			return false;
 		}
 	}
@@ -60,8 +59,9 @@ public class Critter2 extends Critter {
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return  CritterShape.STAR;
+		return  CritterShape.DIAMOND;
 	}
-	
+	public javafx.scene.paint.Color viewOutlineColor() { return javafx.scene.paint.Color.YELLOW; }
+	public javafx.scene.paint.Color viewColor() { return javafx.scene.paint.Color.BLACK; }
 	
 }
