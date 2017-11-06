@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -52,6 +53,7 @@ public class Main  extends Application {
 	private static Stage critterMap = new Stage(); 
 	private static ComboBox<String> runstatsmenu = new ComboBox<>();
 	private static Text runstatsdisplaytext = new Text();
+	private static Boolean animating=false;
 	public static void main(String[] args) {
 		 launch(args);
 	}
@@ -271,6 +273,85 @@ public class Main  extends Application {
         controlPane.add(stepInputBox, 1, 4);
         controlPane.add(textStep, 2, 4);
 
+        
+        //create animation button and slider
+        
+        Button animatebutton = new Button("Start Animation");
+        Text animateText = new Text("Animation Period:");
+        Slider animationSlider = new Slider(1,2, 1);
+        animationSlider.setShowTickLabels(true);
+        animationSlider.setShowTickMarks(true);
+        animatebutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e)
+            {
+                textDisplayWorld.setText("The world was displayed.");
+                if (!animating) 
+                {
+                    animatebutton.setText("Stop Animation");
+                    animating = true;
+                    for (Node n:controlPane.getChildren()) 
+                    {	//disable other buttons
+                        if (n instanceof Control && !n.equals(animatebutton)) 
+                        {
+                            ((Control) n).setDisable( true);
+                        }
+                    }
+
+                    AnimationTimer run =new AnimationTimer() 
+                    {
+                        @Override
+                        public void handle(long a) 
+                        {
+                        	
+                            Critter.worldTimeStep();
+                            GridPane grid = new GridPane();  
+                            Critter.displayWorld(grid);
+                            displayRunStatsScene();
+                            if (!animating) 
+                            {
+                                this.stop();
+                            } 
+                            else 
+                            {
+                                try 
+                                {
+                                    long speed = (long)animationSlider.getValue();
+                                    Thread.sleep(900*speed);
+                                } 
+                                catch (InterruptedException e) 
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    };
+                    run.start();
+                } 
+                else 
+                {
+                    animating =false;
+                    animatebutton.setText("Animate");
+                    
+                    for (Node n : controlPane.getChildren()) 
+                    {											// enable buttons again
+                        if (n instanceof Control && !n.equals(animatebutton)) {
+                            ((Control) n).setDisable(false);
+                        }
+                    }
+                }
+            }
+        });
+  
+        controlPane.add(animatebutton,0,5);
+        controlPane.add(animateText,1,5);
+        controlPane.add(animationSlider,2,5);
+        
+        
+        
+        
+        
+        
      // seed button
         Text textSeed =new Text("");
         TextField seedInputBox = new TextField();
@@ -461,7 +542,7 @@ public class Main  extends Application {
         GridPane textGrid = new GridPane();
         ScrollPane root = new ScrollPane(textGrid);
         root.setVvalue(1.0);
-        Scene run_stat_scene = new Scene(root,500, 250);
+        Scene run_stat_scene = new Scene(root,500, 200);
         TextFlow textHolder= new TextFlow();
         Text critterstattext =new Text(critterstats);                                      
         textHolder.widthProperty().isEqualTo(run_stat_scene.widthProperty());
