@@ -1,6 +1,5 @@
-Prawal Sharma ps27933 Eric Su es34826                 Critters - Project 5
 
-Overview: Project 5 - Critters is a virtual simulation of a world of "Critters". This world contains movement, encounter, birthing, and dying of various types of "Critters" in a 2-D grid environment.
+Overview: Critters is a virtual simulation of a world of "Critters". This world contains movement, encounter, birthing, and dying of various types of "Critters" in a 2-D grid environment.
 
 World Model: The model for the project is comprised of a RunStats window which shows the statistical components for each critter, the Controller Component which helps users interface with the Critter World and the View Component which displays the grid. 
 
