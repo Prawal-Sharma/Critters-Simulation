@@ -93,7 +93,7 @@ public class Main  extends Application {
 	        bPane.setTop(titleBox);
 	        bPane.setCenter(controlPane);
 	        
-	        // 
+	      
 	        // Prawal Image
 	        ImageView image = new ImageView(new Image(getClass().getResourceAsStream("prawal.png"),100, 100, true, true ));
 	        image.setX(300);
