@@ -9,7 +9,7 @@ Console/Controller: The world and it's inhabitant population is controlled by th
 3. Time Step Button - initiates a change in the time step of the world and also updates the display.
 4. Run Stats button - displays the statistics of each critter.
 5. Set Seed Button - allows user to input an integer value for seed management. 
-6. Quiz Button - User can exit the program through this button. 
+6. Quit Button - User can exit the program through this button. 
 
 View Component: 
 Ths shows the current state of the 2D grid from the last project in a more dynamic and aesthetically pleasing way. The GUI depics each critter as a shape and defines the critters properties based on class functionalities. The Algae is represented as a defaulted green circle and Craigs with squares. Any critter in the directory can be displayed due to the functionality. 
